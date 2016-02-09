@@ -1,0 +1,7 @@
+body{font-family:Arial;font-size:12px;}
+.tickets{border:1px solid black;border-collapse:collapse;}
+.tickets th, .tickets td{border:1px solid black;padding:3px;}
+.no-ticket{text-align:center;}
+.ticket{vertical-align:top;}
+.error{font-weight:bold;color:red;}
+.form-button{display:inline;}

@@ -1,0 +1,3 @@
+[submodule "varslib"]
+	path = varslib
+	url = git@github.com:devsseb/varslib.git
