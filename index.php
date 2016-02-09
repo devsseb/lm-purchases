@@ -5,7 +5,7 @@
  */
 
 try {
-	include 'varslib.inc.php';
+	include 'varslib/varslib.inc.php';
 	Debug::active();
 
 	ini_set('opcache.enable', 0);
@@ -78,6 +78,7 @@ try {
 		} else {
 
 			if (!$_SESSION['lm_checked']) {
+
 				$result = phantomjs($_SESSION['lm_user'], $_SESSION['lm_password'], 'login');
 				if ($result->login == 'error') {
 					session_destroy();
