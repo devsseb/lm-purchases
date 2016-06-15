@@ -28,7 +28,7 @@ var tickets = [];
 function loadNextPage()
 {
 	ticketPage++;
-	console.log('Tickets page ' + ticketPage + ' loading...');
+	console.log('Tickets page ' + ticketPage + ' loading... (' + urlTicket + ticketPage + ')');
 	page.open(urlTicket + ticketPage);
 }
 
@@ -43,10 +43,19 @@ function loadNextProducts()
 	}
 	exit(tickets);	
 }
-
+/*
+page.onConsoleMessage = function(msg)
+{
+	console.log('*Console page*', msg);
+}
+*/
 page.onLoadFinished = function(status)
 {
-	console.log(status, page.url);
+	console.log('Load finished', status, page.url);
+
+	if (status != 'success')
+		return;
+
 	switch (page.url) {
 		case urlLogin :
 			console.log('Login...');
@@ -70,7 +79,9 @@ page.onLoadFinished = function(status)
 		case urlTicket + ticketPage :
 
 			console.log('Tickets page ' + ticketPage + ' loaded.');
-			var ticketsPage = page.evaluate(function(ticketPage) {
+
+			var ticketsPage = page.evaluate(function() {
+
 				if (document.getElementsByTagName('APM_DO_NOT_TOUCH').length)
 					return [];
 
@@ -85,13 +96,12 @@ page.onLoadFinished = function(status)
 				for (var i = 0; i < domDates.length; i++) {
 
 					var date = domDates[i].innerText;
-					date = /([0-9]{2}) (.*?) ([0-9]{4})/.exec(date);
-					date[2] = {janvier:'01', février:'02', mars:'03', avril:'04', mai:'05', juin:'06', juillet:'07', août:'08', septembre:'09', octobre:'10', novembre:'11', décembre:'12'}[date[2]];
+					date = /([0-9]{2})\/(.*?)\/([0-9]{4})/.exec(date);
 					date = date[3] + date[2] + date[1];
 
 					tickets.push({
 						date: date,
-						number: domNumbers[i].innerText.replace('N° Ticket: ', ''),
+						number: domNumbers[i].innerText.replace('Ticket n°', ''),
 						location: domLocations[i].innerText,
 						price: domPrices[i].innerText.replace(' €', ''),
 						products: domLinks[i].href.replace('commandes/ticket_', 'tickets/')
